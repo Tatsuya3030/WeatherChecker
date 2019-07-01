@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Http;
 
 namespace WeatherChecker
 {
@@ -27,13 +28,19 @@ namespace WeatherChecker
 
             foreach (KeyValuePair<string, string> data in this.cityNames)
             {
-                areaBox.Items.Add(data.key);
+                areaBox.Items.Add(data.Key);
             }
         }
 
         private void CitySelected(object sender, EventArgs e)
         {
-
+            //天気情報サービスにアクセスする
+            string cityCode = cityNames[areaBox.Text];
+            string url =
+                "https://and-idea.sbcr.jp.jp/sp/90261/weatherCheck.php?city=" +
+                cityCode;
+            HttpClient client = new HttpClient();
+            string result = client.GetStringAsync(url).Result;
         }
     }
 }
